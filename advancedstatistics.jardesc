@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="advancedstatistics/advancedstatistics.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/advancedstatistics/advancedstatistics.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <file path="/advancedstatistics/Messages_eu.properties"/>
+        <javaElement handleIdentifier="=advancedstatistics/&lt;org.darkman.plugins.advancedstatistics.util"/>
+        <javaElement handleIdentifier="=advancedstatistics/&lt;org.darkman.plugins.advancedstatistics.graphic"/>
+        <javaElement handleIdentifier="=advancedstatistics/&lt;org.darkman.plugins.advancedstatistics"/>
+        <javaElement handleIdentifier="=advancedstatistics/&lt;org.darkman.plugins.advancedstatistics.dataprovider"/>
+        <file path="/advancedstatistics/Messages.properties"/>
+    </selectedElements>
+</jardesc>
