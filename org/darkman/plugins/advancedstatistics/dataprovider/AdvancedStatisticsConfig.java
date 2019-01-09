@@ -31,6 +31,8 @@ import com.biglybt.pif.PluginInterface;
 import com.biglybt.pif.config.ConfigParameter;
 import com.biglybt.pif.config.ConfigParameterListener;
 import com.biglybt.pif.ui.config.*;
+import com.biglybt.pif.ui.model.BasicPluginConfigModel;
+
 import com.biglybt.pifimpl.local.ui.config.ParameterImpl;
 
 
@@ -40,9 +42,9 @@ import com.biglybt.pifimpl.local.ui.config.ParameterImpl;
  * 
  */
 public class AdvancedStatisticsConfig implements ConfigParameterListener {
+    private static String KEY_PREFIX;
     private PluginConfig config;
     
-    public static final String KEY_PREFIX = "Plugin.advancedstatistics.";
     public static final String LABEL_PREFIX = "AdvancedStatistics.config.";
     
     public static final String TORRENTS_DISPLAY_STYLE = "torrents.display.style";
@@ -94,6 +96,7 @@ public class AdvancedStatisticsConfig implements ConfigParameterListener {
     public AdvancedStatisticsConfig(PluginInterface pluginInterface) {
         Log.out("AdvancedStatisticsConfig.construct");
         config = pluginInterface.getPluginconfig();
+        KEY_PREFIX = config.getPluginConfigKeyPrefix();
 
         //load config
         torrentsDisplayStyle = allowedParamValue(config.getPluginIntParameter(TORRENTS_DISPLAY_STYLE , 0), TORRENTS_DISPLAY_STYLE_VALUES , TORRENTS_DISPLAY_STYLE_VALUES[0]);
@@ -105,21 +108,17 @@ public class AdvancedStatisticsConfig implements ConfigParameterListener {
         activityShowLegend   = config.getPluginBooleanParameter(ACTIVITY_SHOW_LEGEND, true);
          
         //initialize plugin configuration       
-        PluginConfigUIFactory factory = pluginInterface.getPluginConfigUIFactory();
-        Parameter parameters[] = new Parameter[7];        
-        parameters[0] = factory.createIntParameter    (TORRENTS_DISPLAY_STYLE , LABEL_PREFIX + TORRENTS_DISPLAY_STYLE , 0, TORRENTS_DISPLAY_STYLE_VALUES , TORRENTS_DISPLAY_STYLE_LABELS);
-        parameters[1] = factory.createIntParameter    (ACTIVITY_DATA_SIZE     , LABEL_PREFIX + ACTIVITY_DATA_SIZE     , 0, ACTIVITY_DATA_SIZE_VALUES     , ACTIVITY_DATA_SIZE_LABLES    );
-        parameters[2] = factory.createIntParameter    (ACTIVITY_DISPLAY_STYLE , LABEL_PREFIX + ACTIVITY_DISPLAY_STYLE , 0, ACTIVITY_DISPLAY_STYLE_VALUES , ACTIVITY_DISPLAY_STYLE_LABLES);
-        parameters[3] = factory.createIntParameter    (ACTIVITY_DISPLAY_TYPE  , LABEL_PREFIX + ACTIVITY_DISPLAY_TYPE  , 0, ACTIVITY_DISPLAY_TYPE_VALUES  , ACTIVITY_DISPLAY_TYPE_LABELS );
-        parameters[4] = factory.createIntParameter    (ACTIVITY_SCALE         , LABEL_PREFIX + ACTIVITY_SCALE         , 1, ACTIVITY_SCALE_VALUES         , ACTIVITY_SCALE_LABELS        );
-        parameters[5] = factory.createBooleanParameter(ACTIVITY_SHOW_LIMIT    , LABEL_PREFIX + ACTIVITY_SHOW_LIMIT    , true);
-        parameters[6] = factory.createBooleanParameter(ACTIVITY_SHOW_LEGEND   , LABEL_PREFIX + ACTIVITY_SHOW_LEGEND   , true);
-        
-        for(int i = 0; i < parameters.length; i++) parameters[i].addConfigParameterListener(this);
-        pluginInterface.addConfigUIParameters(parameters, "AdvancedStatistics.title.full");
+        BasicPluginConfigModel configModel = pluginInterface.getUIManager().createBasicPluginConfigModel("AdvancedStatistics.title.full");
+        Parameter parameters[] = new Parameter[7];
+        parameters[0] = configModel.addIntListParameter2(TORRENTS_DISPLAY_STYLE , LABEL_PREFIX + TORRENTS_DISPLAY_STYLE , TORRENTS_DISPLAY_STYLE_VALUES , TORRENTS_DISPLAY_STYLE_LABELS, 0);
+        parameters[1] = configModel.addIntListParameter2(ACTIVITY_DATA_SIZE     , LABEL_PREFIX + ACTIVITY_DATA_SIZE     , ACTIVITY_DATA_SIZE_VALUES     , ACTIVITY_DATA_SIZE_LABLES    , 0);
+        parameters[2] = configModel.addIntListParameter2(ACTIVITY_DISPLAY_STYLE , LABEL_PREFIX + ACTIVITY_DISPLAY_STYLE , ACTIVITY_DISPLAY_STYLE_VALUES , ACTIVITY_DISPLAY_STYLE_LABLES, 0);
+        parameters[3] = configModel.addIntListParameter2(ACTIVITY_DISPLAY_TYPE  , LABEL_PREFIX + ACTIVITY_DISPLAY_TYPE  , ACTIVITY_DISPLAY_TYPE_VALUES  , ACTIVITY_DISPLAY_TYPE_LABELS , 0);
+        parameters[4] = configModel.addIntListParameter2(ACTIVITY_SCALE         , LABEL_PREFIX + ACTIVITY_SCALE         , ACTIVITY_SCALE_VALUES         , ACTIVITY_SCALE_LABELS        , 1);
+        parameters[5] = configModel.addBooleanParameter2(ACTIVITY_SHOW_LIMIT    , LABEL_PREFIX + ACTIVITY_SHOW_LIMIT    , true);
+        parameters[6] = configModel.addBooleanParameter2(ACTIVITY_SHOW_LEGEND   , LABEL_PREFIX + ACTIVITY_SHOW_LEGEND   , true);
 
-        //BasicPluginConfigModel configModel = pluginInterface.getUIManager().createBasicPluginConfigModel("Plugins", "AdvancedStatistics.title.full");      
-        //configModel.createGroup("AdvancedStatistics.title.full", parameters);
+        for(int i = 0; i < parameters.length; i++) parameters[i].addConfigParameterListener(this);
 
         parameterListeners = new Vector();
     }
