@@ -123,13 +123,13 @@ public class AdvancedStatisticsView implements UISWTViewEventListener {
 		try {
             switch(folder.getSelectionIndex()) {
                 case 0:
-                    if(viewProgress != null && !itemProgress.isDisposed()) viewProgress.refresh();
+                    if(viewProgress != null && !itemProgress.isDisposed()) viewProgress.refresh( false );
 				    break;
                 case 1:
-                    if(viewActivity != null && !itemActivity.isDisposed()) viewActivity.refresh();
+                    if(viewActivity != null && !itemActivity.isDisposed()) viewActivity.refresh( false );
                     break;
                 case 2:
-                    if(viewTransfer != null && !itemTransfer.isDisposed()) viewTransfer.refresh();
+                    if(viewTransfer != null && !itemTransfer.isDisposed()) viewTransfer.refresh( false );
                     break;
             }
 		} catch (Exception e) {

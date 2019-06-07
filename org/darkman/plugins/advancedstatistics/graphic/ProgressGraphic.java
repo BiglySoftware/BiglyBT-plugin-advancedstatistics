@@ -30,7 +30,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+
 import com.biglybt.core.config.COConfigurationManager;
 import com.biglybt.core.config.ParameterListener;
 
@@ -64,10 +69,31 @@ public class ProgressGraphic extends BackgroundGraphic implements ParameterListe
         colorDark = null;
 	    COConfigurationManager.addParameterListener("Graphics Update",this);
 	    parameterChanged("Graphics Update");
+	    
+	  	drawCanvas.addPaintListener(new PaintListener() {
+				@Override
+				public void paintControl(PaintEvent e) {
+					if (bufferImage != null && !bufferImage.isDisposed()) {
+						Rectangle bounds = bufferImage.getBounds();
+						if (bounds.width >= ( e.width + e.x ) && bounds.height >= ( e.height + e.y )) {
+
+							e.gc.drawImage(bufferImage, e.x, e.y, e.width, e.height, e.x, e.y,
+									e.width, e.height);
+						}
+					}
+				}
+			});
+
+	  	drawCanvas.addListener(SWT.Resize, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					drawChart(true);
+				}
+			});
     }
 
     @Override
-    public void refresh() {
+    public void refresh( boolean force ) {
         if(drawCanvas == null || drawCanvas.isDisposed()) return;
         if(colorLight == null) colorLight = new Color(drawCanvas.getDisplay(), 198, 226, 255); // Colors.blues[Colors.BLUES_MIDLIGHT];
         if(colorDark  == null) colorDark =  new Color(drawCanvas.getDisplay(),   0, 128, 255); //Colors.blues[Colors.BLUES_DARKEST];         
@@ -80,11 +106,13 @@ public class ProgressGraphic extends BackgroundGraphic implements ParameterListe
         
         internalLoop++;
         if(internalLoop > graphicsUpdate) internalLoop = 0;
-        if(internalLoop == 0 || sizeChanged) drawChart(sizeChanged);
+        if(internalLoop == 0 || sizeChanged || force ) drawChart(sizeChanged);
         
         GC gc = new GC(drawCanvas);
         gc.drawImage(bufferImage, bounds.x, bounds.y);
-        gc.dispose();    
+        gc.dispose();   
+        
+        drawCanvas.redraw();
     }
 
 	protected void drawScale(boolean sizeChanged, boolean drawScale) {

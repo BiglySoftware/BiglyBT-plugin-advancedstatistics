@@ -147,7 +147,7 @@ public class ProgressView {
         torrentsTable.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                refresh();
+                refresh( true );
             }
         });
         
@@ -235,14 +235,14 @@ public class ProgressView {
         if(!folderProgress.isDisposed()) Utils.disposeComposite(folderProgress);
 	}
 
-	public void refresh() {
+	public void refresh( boolean force ) {
         torrentsTable.setItemCount(dataProvider.torrentDataProvider.torrents.size());
         torrentsTable.clearAll();
 	    torrentsTable.redraw();
 
         switch(folderProgress.getSelectionIndex()) {
             case 0:
-                progressGraphic.refresh();
+                progressGraphic.refresh( force );
                 break;
             case 1:
                 TorrentData torrentData = getSelectedTorrentData();

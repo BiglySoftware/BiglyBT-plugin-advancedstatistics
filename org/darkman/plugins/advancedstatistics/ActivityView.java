@@ -80,14 +80,14 @@ public class ActivityView implements ParameterListener  {
         Messages.setLanguageText(labelDisplayType, "AdvancedStatistics.ActivityView.settings.display.type");
         comboDisplayType = new Combo(groupSettings, SWT.DROP_DOWN | SWT.READ_ONLY);
         for(int i = 0; i < AdvancedStatisticsConfig.ACTIVITY_DISPLAY_TYPE_LABELS.length; i++)
-            comboDisplayType.add(AdvancedStatisticsConfig.ACTIVITY_DISPLAY_TYPE_LABELS[i]);
+            comboDisplayType.add(AdvancedStatisticsConfig.ACTIVITY_DISPLAY_TYPE_LABELS[i] + "    " );
         comboDisplayType.select(dataProvider.config.activityDisplayType);
         comboDisplayType.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Combo combo = (Combo)e.widget;
                 dataProvider.config.activityDisplayType = combo.getSelectionIndex();
-                refresh();
+                refresh( true );
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -98,7 +98,7 @@ public class ActivityView implements ParameterListener  {
         Messages.setLanguageText(labelScale, "AdvancedStatistics.ActivityView.settings.scale");
         comboScale = new Combo(groupSettings, SWT.DROP_DOWN | SWT.READ_ONLY);
         for(int i = 0; i < AdvancedStatisticsConfig.ACTIVITY_SCALE_LABELS.length; i++)
-            comboScale.add(AdvancedStatisticsConfig.ACTIVITY_SCALE_LABELS[i]);
+            comboScale.add(AdvancedStatisticsConfig.ACTIVITY_SCALE_LABELS[i] + "    " );
         comboScale.select(ActivityData.scaleToIndex(dataProvider.config.activityScale));
         comboScale.addSelectionListener(new SelectionListener() {
             @Override
@@ -106,7 +106,7 @@ public class ActivityView implements ParameterListener  {
                 Combo combo = (Combo)e.widget;
                 dataProvider.config.activityScale = ActivityData.indexToScale(combo.getSelectionIndex());
                 selectZeroOffset = true;
-                refresh();
+                refresh( true );
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -122,7 +122,7 @@ public class ActivityView implements ParameterListener  {
             public void widgetSelected(SelectionEvent e) {
                 Button button = (Button)e.widget;
                 dataProvider.config.activityShowLimit = button.getSelection();
-                refresh();
+                refresh( true );
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -138,7 +138,7 @@ public class ActivityView implements ParameterListener  {
             public void widgetSelected(SelectionEvent e) {
                 Button button = (Button)e.widget;
                 dataProvider.config.activityShowLegend = button.getSelection();
-                refresh();
+                refresh( true );
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -171,6 +171,9 @@ public class ActivityView implements ParameterListener  {
         slider.setMaximum(activityGraphicDownload.getSliderMax());
         selectZeroOffset = true;        
         
+        slider.addSelectionListener(
+        	SelectionListener.widgetSelectedAdapter( (e) -> { refresh( true );}));
+        
         Canvas canvasGraphicUpload = new Canvas(groupActivity, SWT.NULL);
         canvasGraphicUpload.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         activityGraphicUpload = new ActivityGraphic(canvasGraphicUpload, dataProvider.config, dataProvider.uploadActivityData, dataProvider.torrentDataProvider.uploadActivityData);
@@ -199,7 +202,7 @@ public class ActivityView implements ParameterListener  {
         if(activityGraphicUpload != null) activityGraphicUpload.dispose();
     }
 
-    public void refresh() {
+    public void refresh( boolean force ) {
         activityGraphicDownload.updateScale();
         int sliderMax = activityGraphicDownload.getSliderMax();
         int sliderThumb = activityGraphicDownload.getSliderThumb();
@@ -213,7 +216,7 @@ public class ActivityView implements ParameterListener  {
             sampleOffset = sliderMax - sliderThumb - slider.getSelection();
         selectZeroOffset = false;
         
-        if(activityGraphicDownload != null) activityGraphicDownload.refresh(sampleOffset);
-        if(activityGraphicUpload != null) activityGraphicUpload.refresh(sampleOffset);
+        if(activityGraphicDownload != null) activityGraphicDownload.refresh(sampleOffset,force);
+        if(activityGraphicUpload != null) activityGraphicUpload.refresh(sampleOffset,force);
     }
 }

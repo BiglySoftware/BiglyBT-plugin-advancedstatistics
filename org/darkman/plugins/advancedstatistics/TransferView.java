@@ -229,7 +229,7 @@ public class TransferView {
         Utils.disposeComposite(panel);
     }
 
-    public void refresh() {
+    public void refresh( boolean force ) {
         summaryTable.clearAll();
         summaryTable.redraw(); 
         

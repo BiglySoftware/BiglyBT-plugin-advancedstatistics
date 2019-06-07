@@ -64,7 +64,7 @@ public class TorrentActivityData {
     public void exit()  { this_mon.exit();  }
 
     public void update() {
-        int activityDataCount = activityDataCount = activityData.length;
+        int activityDataCount = activityData.length;
         if(torrentDataProvider.torrents.size() == activityDataCount) return;
         try {
             this_mon.enter();
@@ -111,8 +111,9 @@ public class TorrentActivityData {
         int width = 0;
         try {
             GC gc = new GC(advstats.swt_ui.getDisplay());
-            for(int i = 0; i < text.length(); i++)
-                width += gc.getAdvanceWidth(text.charAt(i));
+            width = gc.textExtent( text ).x;
+            //for(int i = 0; i < text.length(); i++)
+            //    width += gc.getAdvanceWidth(text.charAt(i));
             gc.dispose();
         } catch(Exception ex) {
             width = text.length() * 5;

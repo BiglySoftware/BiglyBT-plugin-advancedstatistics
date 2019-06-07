@@ -57,7 +57,7 @@ public class BackgroundGraphic {
         colorLightBlue  = new Color(canvas.getDisplay(), 200, 225, 250);
     }
   
-    public void refresh() {    
+    public void refresh( boolean force ) {    
     }
   
     protected void drawBackGround(boolean sizeChanged) {    

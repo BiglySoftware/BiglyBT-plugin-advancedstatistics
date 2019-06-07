@@ -41,7 +41,6 @@ public class AdvancedStatistics implements Plugin, PluginListener, UIManagerList
     public AdvancedStatistics() { super(); }
     @Override
     public void initialize(PluginInterface pluginInterface) throws PluginException {
-    	System.err.println("AdvancedStats !+");
         Log.setLogDirectoryName(pluginInterface.getPluginDirectoryName());
         Log.clear();
         Log.out("AdvancedStatistics.initialize");

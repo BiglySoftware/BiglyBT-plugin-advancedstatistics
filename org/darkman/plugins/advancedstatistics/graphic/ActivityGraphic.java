@@ -23,12 +23,17 @@ package org.darkman.plugins.advancedstatistics.graphic;
 import org.darkman.plugins.advancedstatistics.dataprovider.*;
 import org.darkman.plugins.advancedstatistics.util.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+
 import com.biglybt.core.config.COConfigurationManager;
 import com.biglybt.core.config.ParameterListener;
 import com.biglybt.core.util.DisplayFormatters;
@@ -94,6 +99,27 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
             new Color(drawCanvas.getDisplay(), 150, 150, 150), // dark gray
             new Color(drawCanvas.getDisplay(), 255,   0,   0)  // dark red
         };
+        
+      	drawCanvas.addPaintListener(new PaintListener() {
+    			@Override
+    			public void paintControl(PaintEvent e) {
+    				if (bufferImage != null && !bufferImage.isDisposed()) {
+    					Rectangle bounds = bufferImage.getBounds();
+    					if (bounds.width >= ( e.width + e.x ) && bounds.height >= ( e.height + e.y )) {
+
+    						e.gc.drawImage(bufferImage, e.x, e.y, e.width, e.height, e.x, e.y,
+    								e.width, e.height);
+    					}
+    				}
+    			}
+    		});
+
+      	drawCanvas.addListener(SWT.Resize, new Listener() {
+    			@Override
+    			public void handleEvent(Event event) {
+    				drawChart(true);
+    			}
+    		});
     }
     
     public int getSliderMax() { return activityData.samples; }
@@ -109,7 +135,7 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
         if(chartSamples > activityData.samples) chartSamples = activityData.samples; 
     }
 
-    public void refresh(int sampleOffset) {
+    public void refresh(int sampleOffset, boolean force ) {
         this.sampleOffset = sampleOffset;
 
         Rectangle bounds = drawCanvas.getClientArea();
@@ -120,11 +146,13 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
         
         internalLoop++;
         if(internalLoop > graphicsUpdate) internalLoop = 0;
-        if(internalLoop == 0 || sizeChanged) drawChart(sizeChanged);
+        if(internalLoop == 0 || sizeChanged || force ) drawChart(sizeChanged);
         
         GC gc = new GC(drawCanvas);
         gc.drawImage(bufferImage, bounds.x, bounds.y);
-        gc.dispose();    
+        gc.dispose();  
+        
+        drawCanvas.redraw();
     }
 
     protected void drawScale(boolean sizeChanged, int max) {
@@ -181,11 +209,11 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
         int width = 0, height = 0;
         switch(config.activityDisplayType) {
             case 0:
-                width = 120;
+                width = 130;
                 height = legendOffset * 2 + legendItemHeight;
                 break;
             case 1:
-                width = 80;
+                width = 90;
                 height = legendOffset * 2 + legendItemHeight * 2;
                 break;
             case 2:
@@ -193,7 +221,7 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
                     width = legendOffset * 4 + legendItemHeight + torrentActivityData.maxTorrentNameWidth ;
                     height = legendOffset * 2 + (torrentActivityData.torrentName.length + 1) * legendItemHeight; 
                 } else {
-                    width = 80;
+                    width = 90;
                     height = legendOffset * 2 + legendItemHeight;                    
                 }
                 break;
