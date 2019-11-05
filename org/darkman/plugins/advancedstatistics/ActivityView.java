@@ -171,8 +171,7 @@ public class ActivityView implements ParameterListener  {
         slider.setMaximum(activityGraphicDownload.getSliderMax());
         selectZeroOffset = true;        
         
-        slider.addSelectionListener(
-        	SelectionListener.widgetSelectedAdapter( (e) -> { refresh( true );}));
+        slider.addListener(SWT.Selection, (e) -> { refresh( true );});
         
         Canvas canvasGraphicUpload = new Canvas(groupActivity, SWT.NULL);
         canvasGraphicUpload.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
