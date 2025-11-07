@@ -179,14 +179,14 @@ public class DataProvider {
             int time = (int)DateTime.getMillisecondsSinceMidnight(System.currentTimeMillis());
         
             downloadActivityData.add(
-                    stats.getDataReceiveRate(), 
+                    (int)stats.getDataReceiveRate(), 
                     stats.getProtocolReceiveRate(),
-                    COConfigurationManager.getIntParameter(PluginConfig.CORE_PARAM_INT_MAX_DOWNLOAD_SPEED_KBYTES_PER_SEC) * 1024,
+                    (int)COConfigurationManager.getLongParameter(PluginConfig.CORE_PARAM_LONG_MAX_DOWNLOAD_SPEED_KBYTES_PER_SEC) * 1024,
                     time);
             uploadActivityData.add( 
-                    stats.getDataSendRate(), 
+                    (int)stats.getDataSendRate(), 
                     stats.getProtocolSendRate(),                
-                    COConfigurationManager.getIntParameter(PluginConfig.CORE_PARAM_INT_MAX_UPLOAD_SPEED_KBYTES_PER_SEC) * 1024,
+                    (int)COConfigurationManager.getLongParameter(PluginConfig.CORE_PARAM_LONG_MAX_UPLOAD_SPEED_KBYTES_PER_SEC) * 1024,
                     time);                
         } finally {
             this_mon.exit();
