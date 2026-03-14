@@ -139,7 +139,7 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
         this.sampleOffset = sampleOffset;
 
         Rectangle bounds = drawCanvas.getClientArea();
-        if(bounds.height < 30 || bounds.width  < 100 || bounds.width > 2000 || bounds.height > 2000) return;
+        if(bounds.height < 30 || bounds.width  < 100 || bounds.width > MAX_WIDTH || bounds.height > MAX_HEIGHT) return;
         
         boolean sizeChanged = (oldSize == null || oldSize.x != bounds.width || oldSize.y != bounds.height);
         oldSize = new Point(bounds.width, bounds.height);
@@ -202,18 +202,18 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
     }
 
     static final int legendOffset = 5;
-    static final int legendItemHeight = 15;
+    static final int legendItemHeight = 20;
 
     private void drawLegend() {
         if(drawCanvas == null || drawCanvas.isDisposed()) return;
         int width = 0, height = 0;
         switch(config.activityDisplayType) {
             case 0:
-                width = 130;
+                width = 200;
                 height = legendOffset * 2 + legendItemHeight;
                 break;
             case 1:
-                width = 90;
+                width = 150;
                 height = legendOffset * 2 + legendItemHeight * 2;
                 break;
             case 2:
@@ -221,7 +221,7 @@ public class ActivityGraphic extends BackgroundGraphic implements ParameterListe
                     width = legendOffset * 4 + legendItemHeight + torrentActivityData.maxTorrentNameWidth ;
                     height = legendOffset * 2 + (torrentActivityData.torrentName.length + 1) * legendItemHeight; 
                 } else {
-                    width = 90;
+                    width = 150;
                     height = legendOffset * 2 + legendItemHeight;                    
                 }
                 break;

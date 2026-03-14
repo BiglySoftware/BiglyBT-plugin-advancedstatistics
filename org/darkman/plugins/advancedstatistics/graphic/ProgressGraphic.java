@@ -99,7 +99,7 @@ public class ProgressGraphic extends BackgroundGraphic implements ParameterListe
         if(colorDark  == null) colorDark =  new Color(drawCanvas.getDisplay(),   0, 128, 255); //Colors.blues[Colors.BLUES_DARKEST];         
 
         Rectangle bounds = drawCanvas.getClientArea();
-        if(bounds.height < 30 || bounds.width  < 100 || bounds.width > 2000 || bounds.height > 2000) return;
+        if(bounds.height < 30 || bounds.width  < 100 || bounds.width > MAX_WIDTH || bounds.height > MAX_HEIGHT) return;
         
         boolean sizeChanged = (oldSize == null || oldSize.x != bounds.width || oldSize.y != bounds.height);
         oldSize = new Point(bounds.width, bounds.height);

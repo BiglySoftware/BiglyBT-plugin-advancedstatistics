@@ -60,6 +60,9 @@ public class BackgroundGraphic {
     public void refresh( boolean force ) {    
     }
   
+    int MAX_WIDTH	= 65536;
+    int MAX_HEIGHT	= 65536;
+    
     protected void drawBackGround(boolean sizeChanged) {    
         if(drawCanvas == null || drawCanvas.isDisposed()) return;
     
@@ -69,7 +72,7 @@ public class BackgroundGraphic {
             
             if(bufferBackground != null && !bufferBackground.isDisposed()) bufferBackground.dispose();
       
-            if(bounds.width > 2000 || bounds.height > 2000) return;
+            if(bounds.width > MAX_WIDTH || bounds.height > MAX_HEIGHT) return;
       
             bufferBackground = new Image(drawCanvas.getDisplay(), bounds);
       

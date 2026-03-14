@@ -23,11 +23,11 @@ package org.darkman.plugins.advancedstatistics;
 import org.darkman.plugins.advancedstatistics.dataprovider.*;
 import org.darkman.plugins.advancedstatistics.util.Log;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import com.biglybt.core.util.Debug;
 import com.biglybt.ui.swt.Messages;
 import com.biglybt.ui.swt.Utils;
@@ -44,11 +44,11 @@ public class AdvancedStatisticsView implements UISWTViewEventListener {
     protected DataProvider dataProvider; 
     private boolean isCreated = false;
 	  
-    TabFolder folder;
+    CTabFolder folder;
     
-	TabItem itemProgress;
-    TabItem itemActivity;
-    TabItem itemTransfer;
+    CTabItem itemProgress;
+    CTabItem itemActivity;
+    CTabItem itemTransfer;
 
     ActivityView viewActivity;
     ProgressView viewProgress;
@@ -62,12 +62,12 @@ public class AdvancedStatisticsView implements UISWTViewEventListener {
 	private void initialize(Composite composite) {
 	    Log.out("AdvancedStatisticsView.initialize");
 
-	    folder = new TabFolder(composite, SWT.LEFT);
-	    folder.setBackground(Colors.background);
+	    folder = new CTabFolder(composite, SWT.LEFT);
+	    //folder.setBackground(Colors.background);
 
-	    itemProgress = new TabItem(folder, SWT.NULL);
-	    itemActivity = new TabItem(folder, SWT.NULL);
-	    itemTransfer = new TabItem(folder, SWT.NULL);
+	    itemProgress = new CTabItem(folder, SWT.NULL);
+	    itemActivity = new CTabItem(folder, SWT.NULL);
+	    itemTransfer = new CTabItem(folder, SWT.NULL);
 
         try {
             viewProgress = new ProgressView(dataProvider);

@@ -23,6 +23,8 @@ package org.darkman.plugins.advancedstatistics;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -70,9 +72,9 @@ public class ProgressView {
         new TableItemData(SWT.RIGHT,  80, "AdvancedStatistics.ProgressView.torrents.table.eta.progress")
 	};
 
-    private TabFolder folderProgress;   
-    private TabItem itemProgressGraphic;
-    private TabItem itemProgressTable;
+    private CTabFolder folderProgress;   
+    private CTabItem itemProgressGraphic;
+    private CTabItem itemProgressTable;
 
     private ProgressGraphic progressGraphic;
 
@@ -168,8 +170,8 @@ public class ProgressView {
         groupProgress.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         groupProgress.setLayout(new GridLayout());
         
-        folderProgress = new TabFolder(groupProgress, SWT.NONE);
-        folderProgress.setBackground(Colors.background);
+        folderProgress = new CTabFolder(groupProgress, SWT.NONE);
+        // folderProgress.setBackground(Colors.background);
         folderProgress.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         folderProgress.setLayout(new GridLayout());
 
@@ -180,13 +182,15 @@ public class ProgressView {
         compositeProgressTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         compositeProgressTable.setLayout(new GridLayout());
 
-        itemProgressGraphic = new TabItem(folderProgress, SWT.NULL);
+        itemProgressGraphic = new CTabItem(folderProgress, SWT.NULL);
         itemProgressGraphic.setControl(compositeProgressGraphic);
-        itemProgressTable = new TabItem(folderProgress, SWT.NULL);        
+        itemProgressTable = new CTabItem(folderProgress, SWT.NULL);        
         itemProgressTable.setControl(compositeProgressTable);
         Messages.setLanguageText(itemProgressGraphic, "AdvancedStatistics.ProgressView.progress.graphic.title");
         Messages.setLanguageText(itemProgressTable, "AdvancedStatistics.ProgressView.progress.table.title");
-
+        
+        folderProgress.setSelection(itemProgressGraphic);
+        
         Canvas canvasProgressGraphic = new Canvas(compositeProgressGraphic, SWT.NULL);
         canvasProgressGraphic.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         progressGraphic = new ProgressGraphic(canvasProgressGraphic, this, dataProvider.config);
